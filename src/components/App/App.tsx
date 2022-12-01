@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import "./App.css";
 import Container from "../../shared/Container";
 import Header from "./../Header/Header";
@@ -40,11 +41,51 @@ function App() {
     setUpdatingProducts(undefined);
   };
 
+  const deleteProduct = (id: number) => {
+    setProducts(products.filter((product) => product.id !== id));
+  };
+
+  const handleProductDelete = (product: Product) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#09f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Yes, delete ${product.name}!`,
+    }).then((result) => {
+      if (result.value) {
+        deleteProduct(product.id);
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
+  };
+
+  const handleProductDetail = (product: Product) => {
+    Swal.fire(
+      "Product Detail",
+      `${product.name} costs $${product.price}. We have ${product.stock} available.`,
+      "info"
+    );
+  };
+
+  const handleProductEdit = (product: Product) => {
+    setUpdatingProducts(product);
+  };
+
   return (
     <div className="App">
       <Header title="AlgaStock" />
       <Container>
-        <Table headers={headers} data={products} />
+        <Table
+          headers={headers}
+          data={products}
+          enableActions
+          onEdit={handleProductEdit}
+          onDetail={handleProductDetail}
+          onDelete={handleProductDelete}
+        />
 
         <ProductForm
           form={updatingProducts}

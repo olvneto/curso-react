@@ -106,7 +106,7 @@ const ProductForm: React.FC<ProductFormProps> = (props) => {
         value={form.stock}
       />
 
-      <Button>Submit</Button>
+      <Button>{form.id ? "Update" : "Submit"}</Button>
     </Form>
   );
 };
