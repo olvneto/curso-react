@@ -3,17 +3,17 @@ import { Product } from "./../shared/Table/Table.mockdata";
 import { ProductCreator } from "./../components/Products/ProductForm";
 
 export const getAllProducts = () =>
-  http.get<Product[]>("http://localhost:3024/products").then((res) => res.data);
+  http.get<Product[]>("/products").then((res) => res.data);
 
 export const createSingleProduct = (product: ProductCreator) =>
-  http.post("http://localhost:3024/products", product);
+  http.post("/products", product);
 
 export const updateSingleProduct = ({ _id, name, price, stock }: Product) =>
-  http.patch(`http://localhost:3024/products/${_id}`, {
+  http.patch(`/products/${_id}`, {
     ...(name && { name }),
     ...(price && { price }),
     ...(stock && { stock }),
   });
 
 export const deleteSingleProduct = (id: string) =>
-  http.delete(`http://localhost:3024/products/${id}`);
+  http.delete(`/products/${id}`);
