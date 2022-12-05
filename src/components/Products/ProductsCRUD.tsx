@@ -4,11 +4,14 @@ import Table, { TableHeader } from "../../shared/Table";
 import ProductForm, { ProductCreator } from "./../Products/ProductForm";
 import { Product } from "./../../shared/Table/Table.mockdata";
 import {
-  createSingleProduct,
   updateSingleProduct,
   deleteSingleProduct,
 } from "./../../service/Products.service";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import {
+  insertNewProduct,
+  getProducts,
+} from "./../../redux/Products/Products.actions";
 
 const headers: TableHeader[] = [
   { key: "id", value: "#" },
@@ -23,14 +26,19 @@ declare interface ProductsCRUDProps {
 
 const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   //const [products, setProducts] = useState<Product[]>([]);
+  const dispatch = useDispatch();
 
   const [updatingProduct, setUpdatingProduct] = useState<Product | undefined>(
     undefined
   );
 
   async function fetchData() {
-    // const _products = await getAllProducts();
-    // setProducts(_products);
+    try {
+      // @ts-ignore
+      await dispatch(getProducts());
+    } catch (err) {
+      if (err instanceof Error) Swal.fire("Oops!", err.message, "error");
+    }
   }
 
   useEffect(() => {
@@ -39,7 +47,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
 
   const handleProductSubmit = async (product: ProductCreator) => {
     try {
-      await createSingleProduct(product);
+      dispatch(insertNewProduct(product));
       fetchData();
     } catch (err) {
       if (err instanceof Error) Swal.fire("Oops!", err.message, "error");
