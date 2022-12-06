@@ -1,16 +1,16 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Container from "../../shared/Container";
-import Header from "./../Header/Header";
-import ProductsCRUD from "./../Products/ProductsCRUD";
+import HomeView from "./../../views/HomeView";
 
 function App() {
   return (
     <div className="App">
-      <Header title="AlgaStock" />
-      <Container>
-        <ProductsCRUD />
-      </Container>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomeView />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
