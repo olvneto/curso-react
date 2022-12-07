@@ -1,7 +1,8 @@
-import Products, { Product } from "../../shared/Table/Table.mockdata";
+//import Products, { Product } from "../../shared/Table/Table.mockdata";
 import { Action } from "..";
+import { Product } from "./../../shared/Table/Table.mockdata";
 
-export default function f(state = Products, action: Action): Product[] {
+export default function f(state: Product[] = [], action: Action): Product[] {
   switch (action.type) {
     case "FETCH_PRODUCTS":
       return action.payload;

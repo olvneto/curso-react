@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ProfileCard, { User } from "./../components/Authentication/ProfileCard";
 import Header from "./../components/Header/Header";
 import Container from "./../shared/Container/Container";
+import withPermission from "./../utils/HOC/withPermission";
 
 declare interface ProfileViewProps {
   user: User;

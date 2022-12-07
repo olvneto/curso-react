@@ -3,6 +3,7 @@ import Form from "./../../shared/Form/Form";
 import Input from "./../../shared/Input/Input";
 import Button from "./../../shared/Button/Button";
 import { Product } from "./../../shared/Table/Table.mockdata";
+import withPermission from "./../../utils/HOC/withPermission";
 
 declare interface InitialFormState {
   _id?: string;
