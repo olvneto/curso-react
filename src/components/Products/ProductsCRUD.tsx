@@ -24,6 +24,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   const showErrorAlert = (err: Error) => {
