@@ -27,3 +27,7 @@ const mapStateToProps = () => ({
 });
 
 export default connect(mapStateToProps)(ProfileView);
+
+// export default connect(mapStateToProps)(
+//   withPermission(["admin", "customer"], "/")(ProfileView)
+// );

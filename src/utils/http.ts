@@ -10,7 +10,7 @@ http.interceptors.request.use((config) => {
 
   if (token) {
     // @ts-ignore
-    config.headers["Authorization"] = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });

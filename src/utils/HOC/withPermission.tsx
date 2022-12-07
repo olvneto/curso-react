@@ -12,8 +12,8 @@ const withPermission =
     const auth = useSelector((state: RootState) => ({
       profile: state.authentication.profile,
     }));
-    console.log(auth.profile?.role);
-    return auth.profile?.role ? (
+
+    return roles.includes(auth.profile?.role) ? (
       <Component {...props} />
     ) : redirect ? (
       redirectPage(redirect)
