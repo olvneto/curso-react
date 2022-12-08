@@ -6,6 +6,7 @@ import { Product } from "./../../shared/Table/Table.mockdata";
 import { connect, useDispatch } from "react-redux";
 import * as ProductsAction from "./../../redux/Products/Products.actions";
 import { RootState, ThunkDispatch } from "../../redux";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const headers: TableHeader[] = [
   { key: "id", value: "#" },
@@ -22,10 +23,22 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
   // @ts-ignore
   const dispatch: ThunkDispatch = useDispatch();
 
+  const params = useParams<{ id?: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setUpdatingProduct(
+      params.id
+        ? props.products.find((product) => product._id === params.id)
+        : undefined
+    );
+  }, [params, props.products]);
 
   const showErrorAlert = (err: Error) => {
     if (err instanceof Error) Swal.fire("Oops!", err.message, "error");
@@ -46,7 +59,12 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
 
   const handleProductUpdate = async (newProduct: Product) => {
     dispatch(ProductsAction.updateProduct(newProduct))
-      .then(() => setUpdatingProduct(undefined))
+      .then(() => {
+        setUpdatingProduct(undefined);
+        navigate({
+          pathname: "/products",
+        });
+      })
       .catch(showErrorAlert);
   };
 
@@ -86,9 +104,15 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
         headers={headers}
         data={props.products}
         enableActions
-        onEdit={setUpdatingProduct}
+        onEdit={(product) => {
+          navigate({
+            pathname: `/products/${product._id}`,
+            search: location.search,
+          });
+        }}
         onDetail={handleProductDetail}
         onDelete={handleProductDelete}
+        itemsPerPage={5}
       />
 
       <ProductForm
