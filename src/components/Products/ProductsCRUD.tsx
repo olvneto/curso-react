@@ -63,6 +63,7 @@ const ProductsCRUD: React.FC<ProductsCRUDProps> = (props) => {
         setUpdatingProduct(undefined);
         navigate({
           pathname: "/products",
+          search: location.search,
         });
       })
       .catch(showErrorAlert);

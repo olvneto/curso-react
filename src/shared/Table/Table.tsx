@@ -26,14 +26,16 @@ declare interface TableProps {
 }
 
 const Table: React.FC<TableProps> = (props) => {
-  const itemsPerPage = props.itemsPerPage || 5;
+  const itemsPerPage = props.itemsPerPage || 3;
   const location = useLocation();
-  const page = parseInt(parse(location.search).page as string) | 1;
+  const page = parseInt(parse(location.search).page as string) || 1;
 
   const [organizedData, indexedHeaders] = organizeData(
     props.data,
     props.headers
   );
+
+  organizedData.map((data, i) => (data.id = i + 1));
 
   const paginatedData = paginate(organizedData, itemsPerPage, page);
   const totalPages = Math.ceil(organizedData.length / itemsPerPage);
@@ -43,8 +45,8 @@ const Table: React.FC<TableProps> = (props) => {
       <table className="AppTable">
         <thead>
           <tr>
-            {props.headers.map((header) => (
-              <th className={header.right ? "right" : ""} key={header.key}>
+            {props.headers.map((header, j) => (
+              <th key={j} className={header.right ? "right" : ""}>
                 {header.value}
               </th>
             ))}
@@ -55,18 +57,20 @@ const Table: React.FC<TableProps> = (props) => {
           {paginatedData.map((row, i) => {
             return (
               <tr key={i}>
-                {Object.keys(row).map((item, i) =>
+                {Object.keys(row).map((item, j) =>
                   item !== "$original" ? (
                     <td
-                      key={row.$original.id + i}
-                      className={indexedHeaders[item].right ? "right" : ""}
+                      key={j}
+                      className={
+                        indexedHeaders[item].right ? "right" : undefined
+                      }
                     >
                       {row[item]}
                     </td>
                   ) : null
                 )}
                 {props.enableActions && (
-                  <td className="actions right">
+                  <td className="actions right" key={i}>
                     {props.onEdit && (
                       <Button
                         onClick={() =>
